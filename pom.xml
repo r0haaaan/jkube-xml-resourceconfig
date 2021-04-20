@@ -19,7 +19,6 @@
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <quarkus.package.type>uber-jar</quarkus.package.type>
     <jkube.version>1.3.0-SNAPSHOT</jkube.version>
-    <jkube.namespace>rokumar</jkube.namespace>
   </properties>
   <dependencyManagement>
     <dependencies>
