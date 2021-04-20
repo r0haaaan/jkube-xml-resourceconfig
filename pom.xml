@@ -19,7 +19,7 @@
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <quarkus.package.type>uber-jar</quarkus.package.type>
     <jkube.version>1.3.0-SNAPSHOT</jkube.version>
-      <jkube.namespace>rokumar</jkube.namespace>
+    <jkube.namespace>rokumar</jkube.namespace>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -204,15 +204,51 @@
             <imagePullPolicy>Always</imagePullPolicy>
             <replicas>3</replicas>
             <namespace>rokumar</namespace>
+            <!-- Service Account -->
             <serviceAccounts>
               <serviceAccount>
                 <name>rokumar-serviceaccount</name>
                 <deploymentRef>rokumar-xml-resourceconfig</deploymentRef>
               </serviceAccount>
             </serviceAccounts>
+            <!-- Ingress -->
+            <ingress>
+              <ingressRules>
+                <ingressRule>
+                  <host>hello.example.systems</host>
+                  <paths>
+                    <path>
+                      <pathType>ImplementationSpecific</pathType>
+                      <path>/</path>
+                      <serviceName>rokumar-xml-resourceconfig-service</serviceName>
+                      <servicePort>8080</servicePort>
+                    </path>
+                  </paths>
+                </ingressRule>
+              </ingressRules>
+            </ingress>
           </resources>
         </configuration>
       </plugin>
+        <plugin>
+          <groupId>org.eclipse.jkube</groupId>
+          <artifactId>openshift-maven-plugin</artifactId>
+          <version>${jkube.version}</version>
+          <configuration>
+            <resources>
+              <openshiftBuildConfig>
+                <requests>
+                  <cpu>500m</cpu>
+                  <memory>512Mi</memory>
+                </requests>
+                <limits>
+                  <cpu>1000m</cpu>
+                  <memory>1Gi</memory>
+                </limits>
+              </openshiftBuildConfig>
+            </resources>
+          </configuration>
+        </plugin>
     </plugins>
   </build>
   <profiles>
